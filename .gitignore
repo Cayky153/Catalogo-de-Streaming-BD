@@ -1,0 +1,48 @@
+# Created by venv; see https://docs.python.org/3/library/venv.html
+# =====================
+# Python
+# =====================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# =====================
+# Django
+# =====================
+*.log
+db.sqlite3
+media/
+
+# migrations (opcional, depende do teu fluxo)
+# */migrations/*
+# !*/migrations/__init__.py
+
+# =====================
+# Environment
+# =====================
+env/
+.venv/
+venv/
+
+# =====================
+# VSCode / IDE
+# =====================
+.vscode/
+.idea/
+
+# =====================
+# System
+# =====================
+.DS_Store
+Thumbs.db
+
+# =====================
+# Django secrets
+# =====================
+.env
+
+# =====================
+# Your temp file
+# =====================
+temp_models.py
