@@ -16,4 +16,7 @@ class ClienteSerializer(serializers.ModelSerializer):
         model = Cliente
         fields = ['id_usuario','forma_de_pagamento','planos']    
         
-            
+class ClientePlanoUpdateSerializer(serializers.ModelSerializer):
+   class Meta:
+        model = Cliente
+        fields = ['planos']    
