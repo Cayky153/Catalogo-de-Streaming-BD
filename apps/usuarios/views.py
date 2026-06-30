@@ -31,4 +31,19 @@ class ClienteViewSet(viewsets.ViewSet):
 class UsuarioViewSet(viewsets.ViewSet):
 
     def list(self, request):
-        return Response([])     
+        return Response([])   
+
+# Tarefa: Adicionar Cliente
+class ClienteCreateView(generics.CreateAPIView):
+    queryset = Cliente.objects.all()
+    serializer_class = ClienteSerializer
+
+# Tarefa: Visualizar Assinatura
+class AssinaturaDetailView(generics.RetrieveAPIView):
+    queryset = Cliente.objects.all()
+    serializer_class = ClienteSerializer
+
+# Tarefa: Atualizar Perfil de usuário
+class UsuarioUpdateView(generics.UpdateAPIView):
+    queryset = Usuario.objects.all()
+    serializer_class = UsuarioSerializer  
