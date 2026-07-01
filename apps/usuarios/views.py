@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from .serializers import ClientePlanoUpdateSerializer,ClienteSerializer,UsuarioAddSerializer
 
-# === CLASSE QUE JÁ EXISTIA NO PROJETO ===
+
 class ClienteViewSet(viewsets.ViewSet):
     def retrieve(self,request,pk=None):
         if pk is None:
@@ -59,6 +59,8 @@ class ClienteViewSet(viewsets.ViewSet):
                                 
    
     def update(self, request, pk=None):
+        if pk is None:
+            return Response({"erro": "ID obrigatório"}, status=400)
         serializer = ClientePlanoUpdateSerializer(data=request.data)
         if not serializer.is_valid():
               return Response(
@@ -77,8 +79,29 @@ class ClienteViewSet(viewsets.ViewSet):
     
 class UsuarioViewSet(viewsets.ViewSet):
 
+
     def list(self, request):
-        return Response([])   
+        return Response([])
+
+   
+    def retrieve(self, request, pk=None):
+        if pk is None:
+            return Response({"erro": "ID obrigatório"}, status=400)
+
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                     SELECT id, nome, ddd, numero
+                     FROM usuario
+                     WHERE id = %s
+                     """, [pk])
+            columns = [col[0] for col in cursor.description]
+            row = cursor.fetchone()
+
+        if not row:
+            return Response({"erro": "Usuário não encontrado"}, status=404)
+
+        resultado = dict(zip(columns, row))
+        return Response(resultado)
     
     def create(self, request):
         serializer = UsuarioAddSerializer(data=request.data)
@@ -141,35 +164,9 @@ class UsuarioViewSet(viewsets.ViewSet):
 
         return Response({"mensagem": "Usuario atualizado com sucesso"},status=200)
     
-
-# === A NOSSA CLASSE COM AS DUAS TAREFAS ===
-class UsuarioViewSet(viewsets.ViewSet):
-
-    def list(self, request):
-        return Response([])
-
-    # TAREFA: Visualizar perfil usuario
-    def retrieve(self, request, pk=None):
+    def destroy(self, request, pk=None):
         if pk is None:
             return Response({"erro": "ID obrigatório"}, status=400)
-
-        with connection.cursor() as cursor:
-            cursor.execute("""
-                     SELECT id, nome, ddd, numero
-                     FROM usuario
-                     WHERE id = %s
-                     """, [pk])
-            columns = [col[0] for col in cursor.description]
-            row = cursor.fetchone()
-
-        if not row:
-            return Response({"erro": "Usuário não encontrado"}, status=404)
-
-        resultado = dict(zip(columns, row))
-        return Response(resultado)
-
-    # TAREFA: Remover usuário
-    def destroy(self, request, pk=None):
         with connection.cursor() as cursor:
             cursor.execute("""
                            DELETE FROM usuario
@@ -177,4 +174,8 @@ class UsuarioViewSet(viewsets.ViewSet):
                            """, [pk])
             
         return Response({"mensagem": "Usuário removido com sucesso"}, status=204)
+    
+
+
+   
     
