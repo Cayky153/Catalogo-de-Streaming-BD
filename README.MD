@@ -3,7 +3,7 @@
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
----
+
 
 ## Introdução
 
@@ -11,7 +11,7 @@
 |---|---|---|
 | Trabalho Final - Catálogo de Streaming | June 27, 2026 12:00 PM | Done |
 
----
+
 
 ## Contextualização
 
@@ -19,7 +19,6 @@ Este projeto foi desenvolvido com o objetivo de praticar conceitos de modelagem 
 
 Ao longo do desenvolvimento, o foco esteve em consolidar o entendimento sobre modelagem de dados (chaves primárias, estrangeiras e relacionamentos), a construção de queries SQL diretamente via `cursor` do Django, e a criação de uma API REST utilizando o Django REST Framework.
 
----
 
 ## Tecnologias
 
@@ -27,7 +26,7 @@ Ao longo do desenvolvimento, o foco esteve em consolidar o entendimento sobre mo
 - Django
 - SQL / PostgreSQL
 
----
+
 
 ## Equipe
 
@@ -39,7 +38,7 @@ Ao longo do desenvolvimento, o foco esteve em consolidar o entendimento sobre mo
 | Tiago Viana |
 | Sabryna Lopes |
 
----
+
 
 ## Estrutura de arquivos
 
@@ -88,7 +87,7 @@ streaming/
 └── requirements.txt
 ```
 
----
+
 
 ## Estrutura do Banco de Dados
 
@@ -116,7 +115,7 @@ streaming/
 – **admin** (id [PK], id_usuario [PK, FK])
 • id_usuario é uma chave estrangeira para a chave primária id de usuario
 
----
+
 
 
 ## Como rodar
@@ -171,7 +170,7 @@ Lista todos os catálogos.
 
 **Retorno:** lista de objetos com todas as colunas da tabela `catalogo`.
 
----
+
 
 ### `POST /api/catalogo/planos/`
 Cria um novo plano.
@@ -204,7 +203,7 @@ Cria um novo plano.
 
 **Response `400`** (campos inválidos ou faltando): retorna os erros de validação do serializer.
 
----
+
 
 ## Filmes — `/api/filmes/`
 
@@ -213,7 +212,6 @@ Lista todos os filmes.
 
 **Retorno:** lista de objetos com `id`, `titulo`, `ano_de_lancamento`, `genero_id`.
 
----
 
 ### `GET /api/filmes/<id>/`
 Busca um filme específico pelo `id`.
@@ -282,21 +280,20 @@ Cria um novo filme.
 
 **Response `400`** (campos inválidos ou faltando): retorna os erros de validação do serializer.
 
----
 
 ### `DELETE /api/filmes/<id>/`
 Remove um filme pelo `id`.
 
 **Response `204`:** sem corpo.
 
----
+
 
 ### `GET /api/filmes/generos/`
 Lista todos os gêneros.
 
 **Retorno:** lista de objetos com `id`, `tipo`, `descricao`, `catalogo_id`.
 
----
+
 
 ## Usuários — `/api/usuarios/`
 
@@ -375,7 +372,6 @@ Atualiza um usuário existente pelo `id`. Espera **todos** os campos (não é at
 
 **Response `400`** (campos inválidos ou faltando): retorna os erros de validação do serializer.
 
----
 
 ### `DELETE /api/usuarios/<id>/`
 Remove um usuário pelo `id`.
@@ -387,7 +383,6 @@ Remove um usuário pelo `id`.
 }
 ```
 
----
 
 ## Clientes — `/api/usuarios/clientes/`
 
@@ -423,7 +418,6 @@ Busca os dados da assinatura de um usuário pelo `id_usuario`.
 }
 ```
 
----
 
 ### `POST /api/usuarios/clientes/`
 Cria um cliente, vinculando um usuário existente a um plano.
@@ -450,7 +444,7 @@ Cria um cliente, vinculando um usuário existente a um plano.
 
 **Response `400`** (campos inválidos ou faltando): retorna os erros de validação do serializer.
 
----
+
 
 ### `PUT /api/usuarios/clientes/<id_usuario>/`
 Atualiza o plano de um cliente existente, identificado pelo `id_usuario`.
@@ -471,7 +465,7 @@ Atualiza o plano de um cliente existente, identificado pelo `id_usuario`.
 
 **Response `400`** (campos inválidos ou faltando): retorna os erros de validação do serializer.
 
----
+
 
 ## Notas gerais
 
