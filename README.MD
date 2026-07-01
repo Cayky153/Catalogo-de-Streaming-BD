@@ -9,7 +9,7 @@
 
 | Projeto | Criado em | Status |
 |---|---|---|
-| Trabalho Final - Catálogo de Streaming | June 27, 2026 12:00 PM | Done |
+| Trabalho Final - Catálogo de Streaming | May 29, 2026 13:00 PM | Done |
 
 
 
@@ -32,11 +32,11 @@ Ao longo do desenvolvimento, o foco esteve em consolidar o entendimento sobre mo
 
 | Nome |
 |---|
-| Pedro Rafael |
-| John Lennon |
-| Antônio Pedro |
-| Tiago Viana |
-| Sabryna Lopes |
+| PEDRO RAFAEL DOS SANTOS COELHO |
+| JOHN LENNON FERNANDES DE ANDRADE |
+| ANTONIO PEDRO CAYKY DO NASCIMENTO PEREIRA |
+| TIAGO VIANA MONTEIRO |
+| SABRINA DA SILVA LOPES |
 
 
 
