@@ -2,10 +2,60 @@ from django.shortcuts import render
 from django.db import connection
 from rest_framework import viewsets
 from rest_framework.response import Response
-from .serializers import ClientePlanoUpdateSerializer
+from .serializers import ClientePlanoUpdateSerializer,ClienteSerializer,UsuarioAddSerializer
 
 class ClienteViewSet(viewsets.ViewSet):
+    def retrieve(self,request,pk=None):
+        if pk is None:
+            return Response({"erro": "ID obrigatório"}, status=400)
+    
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                     SELECT c.id_usuario,p.nome,p.duracao,p.preco,p.numero_de_telas,p.qualidade,p.anuncios
+                     FROM cliente AS c, planos AS p
+                     WHERE c.id_usuario=%s AND c.planos_id=p.id
+                        """, [pk])
 
+            columns = [col[0] for col in cursor.description]
+            row = cursor.fetchone()
+
+        if not row:
+            return Response({"erro": "Assinatura não encontrada"}, status=404)
+
+        resultado = dict(zip(columns, row))
+
+        return Response(resultado)
+    
+    def create(self,request):
+        serializer = ClienteSerializer(data=request.data)
+        
+        if not serializer.is_valid():
+            return Response(
+                serializer.errors,
+                status=400
+        )
+            
+        dados= serializer.validated_data
+        
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                            INSERT INTO cliente(
+                                id_usuario,
+                                forma_de_pagamento,
+                                planos_id)
+                            VALUES(
+                                %s,
+                                %s,
+                                %s)
+                        """,[dados["id_usuario"].id,
+                             dados["forma_de_pagamento"],
+                             dados["planos"].id
+                             ])
+        return Response({"Mensagem": "Cliente criado com sucesso",
+                         "id_usuario": dados["id_usuario"].id,
+                         "forma_de_pagamento": dados["forma_de_pagamento"],
+                         "planos_id": dados["planos"].id})              
+                                
    
     def update(self, request, pk=None):
 
@@ -26,24 +76,71 @@ class ClienteViewSet(viewsets.ViewSet):
                          """, [ dados["planos"].id, pk])
 
         return Response({"mensagem": "Plano de usuário atualizado"},status=200)
-    
+    ''
     
 class UsuarioViewSet(viewsets.ViewSet):
 
     def list(self, request):
         return Response([])   
+    
+    def create(self, request):
+        serializer = UsuarioAddSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(
+                serializer.errors,
+                status=400
+            )
+        dados = serializer.validated_data
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                INSERT INTO usuario(
+                    nome,
+                    senha,
+                    ddd,
+                    numero)
+                VALUES(
+                    %s,
+                    %s, 
+                    %s, 
+                    %s
+                    )
+                RETURNING id
+            """, [
+                dados["nome"],
+                dados["senha"],
+                dados["ddd"],
+                dados["numero"]
+            ])
+            usuario_id = cursor.fetchone()[0]
+        return Response(
+            {
+                "mensagem": "Usuario inserido com sucesso",
+                "id": usuario_id,
+                "nome": dados["nome"],
+                "senha": dados["senha"],
+                "ddd": dados["ddd"],
+                "numero": dados["numero"]
+            },
+            status=201
+        )
+    
+    def update(self, request, pk=None):
 
-# Tarefa: Adicionar Cliente
-class ClienteCreateView(generics.CreateAPIView):
-    queryset = Cliente.objects.all()
-    serializer_class = ClienteSerializer
+        serializer = UsuarioAddSerializer(data=request.data)
 
-# Tarefa: Visualizar Assinatura
-class AssinaturaDetailView(generics.RetrieveAPIView):
-    queryset = Cliente.objects.all()
-    serializer_class = ClienteSerializer
+        if not serializer.is_valid():
+              return Response(
+            serializer.errors,
+            status=400
+        )
+        dados = serializer.validated_data
 
-# Tarefa: Atualizar Perfil de usuário
-class UsuarioUpdateView(generics.UpdateAPIView):
-    queryset = Usuario.objects.all()
-    serializer_class = UsuarioSerializer  
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                         UPDATE usuario
+                         SET nome= %s, senha = %s, ddd = %s, numero = %s
+                         WHERE id = %s
+                         """, [ dados["nome"],dados["senha"],dados["ddd"],dados["numero"], pk])
+
+        return Response({"mensagem": "Usuario atualizado com sucesso"},status=200)
+    

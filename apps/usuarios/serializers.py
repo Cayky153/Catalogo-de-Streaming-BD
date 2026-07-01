@@ -14,18 +14,13 @@ class UsuarioAddSerializer(serializers.ModelSerializer):
         fields = ['nome', 'senha', 'ddd', 'numero']
 
 
-
-UsuarioSerializer = UsuarioAddSerializer
-
-
-class ClienteSerializer(serializers.ModelSerializer):
-    plano_detalhes = PlanosVisualizeSerializer(source='planos', read_only=True)  
+class ClienteSerializer(serializers.ModelSerializer): 
 
     class Meta:
         model = Cliente
-        fields = ['id_usuario', 'forma_de_pagamento', 'planos', 'plano_detalhes']  
-
-
+        fields = ['id_usuario', 'forma_de_pagamento', 'planos']  
+        
+        
 class ClientePlanoUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cliente

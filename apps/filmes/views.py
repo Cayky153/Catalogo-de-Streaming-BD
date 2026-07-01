@@ -25,26 +25,7 @@ class FilmesViewSet(viewsets.ViewSet):
 
         return Response(resultado)
     
-    def retrieve(self,request,pk=None):
-        if pk is None:
-            return Response({"erro": "ID obrigatório"}, status=400)
     
-        with connection.cursor() as cursor:
-            cursor.execute("""
-                     SELECT *
-                     FROM filmes
-                        WHERE id = %s
-                        """, [pk])
-
-            columns = [col[0] for col in cursor.description]
-            row = cursor.fetchone()
-
-        if not row:
-            return Response({"erro": "Filme não encontrado"}, status=404)
-
-        resultado = dict(zip(columns, row))
-
-        return Response(resultado)
     
     def create(self,request):
         serializer = FilmesAddSerializer(data=request.data)

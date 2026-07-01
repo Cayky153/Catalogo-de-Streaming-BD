@@ -16,20 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from .views import UsuarioViewSet, ClienteViewSet, ClienteCreateView, AssinaturaDetailView, UsuarioUpdateView
 
-router = DefaultRouter()
-router.register(r'', UsuarioViewSet, basename='usuarios')
-router.register(r'clientes', ClienteViewSet, basename='clientes')
+
 
 urlpatterns = [
-    path('', include(router.urls)),
     path('admin/', admin.site.urls),
     path('api/catalogo/', include('apps.catalogo.urls')),
     path('api/filmes/', include('apps.filmes.urls')),
     path('api/usuarios/', include('apps.usuarios.urls')),
-    path('clientes/add/', ClienteCreateView.as_view(), name='adicionar-cliente'),
-    path('clientes/<int:pk>/assinatura/', AssinaturaDetailView.as_view(), name='visualizar-assinatura'),
-    path('<int:pk>/update/', UsuarioUpdateView.as_view(), name='atualizar-perfil'),
 ]
 
