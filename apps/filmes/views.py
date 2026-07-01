@@ -109,4 +109,19 @@ class FilmesViewSet(viewsets.ViewSet):
 class GenerosViewSet(viewsets.ViewSet):
 
     def list(self, request):
-        return Response([])    
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                           SELECT id, tipo, descricao, catalogo_id
+                           FROM genero
+                           """)
+            
+            columns = [col[0] for col in cursor.description]
+            
+            rows = cursor.fetchall()
+            
+        resultado = [
+            dict(zip(columns, row))
+            for row in rows
+        ]    
+
+        return Response(resultado)    
